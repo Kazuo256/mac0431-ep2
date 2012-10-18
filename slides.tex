@@ -141,13 +141,31 @@
   \end{itemize}
   \pause
   \hspace{10pt}
-  Onde \verb$Medidas$ é uma lista de medidas geradas pela função \textbf{Map} e
-  \verb$DPS$ é o DPS médio total do personagem.
+  Onde \verb$Medidas$ é uma lista de medidas geradas pela função \textbf{Map}
+  (ou agrupadas pela \textbf{Shuffle}) e \verb$DPS$ é o DPS médio total do
+  personagem.
   
   \pause
   \hspace{10pt}
   O DPS médio total é na verdade a média ponderada das várias medidas de DPS
   usando as variações de tempo de cada uma delas como peso.
+\end{frame}
+
+\begin{frame}[fragile]
+  \underline{\Large Função \textbf{Shuffle}:}
+  
+  \vspace{4pt}
+  \begin{itemize}
+    \pause
+    \item[Recebe] Par \verb$(Nome, Medidas)$.
+    \pause
+    \item[Devolve] Par \verb$(Nome, Medida)$.
+  \end{itemize}
+  \pause
+  \hspace{10pt}
+  Basicamente reduz várias medidas de um mesmo personagem em uma única medida,
+  usando o mesmo algoritmo que a função \textbf{Reduce} mas gerando uma saída do
+  mesmo tipo que a função \textbf{Map}.
 \end{frame}
 
 

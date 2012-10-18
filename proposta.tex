@@ -5,7 +5,8 @@
 
 \title{MAC0431 - Segundo Semestre de 2012 \\
        EP2 - Fase 1: Proposta}
-\author{Wilson Kazuo Mizutani \\ Thiago de Gouveia Nunes}
+\author{Thiago de Gouveia Nunes - Nº USP: 6797289 \\
+        Wilson Kazuo Mizutani - Nº USP: 6797230}
 
 \begin{document}
 
@@ -74,8 +75,9 @@
   associando-o a intervalos de tempo corresponde a função \textbf{Map} desejada;
   enquanto que a parte de juntar essas medidas para compor o DPS médio
   (ponderado pelo tamanho dos intervalos de tempo de cada medida) corresponde à
-  função \textbf{Reduce}. A função \textbf{Shuffle} faz o mesmo que a
-  \textbf{Reduce}.
+  função \textbf{Reduce}. A função \textbf{Shuffle} faz praticamente a mesma
+  coisa que a \textbf{Reduce}, exceto que ao invés de gerar só o DPS médio ela
+  também fornece a variação de tempo total usada para calcular essa média.
   
   Segue uma descrição mais precisa de cada uma dessas etapas.
   
@@ -135,7 +137,30 @@
     |      //   Medida[1] --> dt                            |
     |      D <- D + Medida[0]*Medida[1];                    |
     |      T <- T + Medida[1];                              |
-    |    passar o par (D, T) para o Contexto;               |
+    |    passar o par (Nome, D/T) para o Contexto;          |
+    +-------------------------------------------------------+
+    \end{verbatim}
+    
+  
+  \subsection{Função \textbf{Shuffle}}
+  
+    A função \textbf{Shuffle} reduz várias medidas de um mesmo personagem em uma
+    só. O cálculo é o mesmo usado na função \textbf{Reduce}, mudando apenas o
+    formato da saída, que serão pares chave-valor do tipo \verb$(Nome, Medida)$,
+    como na função \textbf{Map}.
+    
+    Pseudo-código:
+    
+    \begin{verbatim}
+    +-------------------------------------------------------+
+    |  DPS-Reduce (Nome, Medidas, Contexto):                |
+    |    D <- 0; // DPS total do personagem                 |
+    |    T <- 0; // tempo de combate total do personagem    |
+    |    para cada Medida em Medidas:                       |
+    |      D <- D + Medida[0]*Medida[1];                    |
+    |      T <- T + Medida[1];                              |
+    |    Medida <- (D/T, T);                                |
+    |    passar o par (Nome, Medida) para o Contexto;       |
     +-------------------------------------------------------+
     \end{verbatim}
 

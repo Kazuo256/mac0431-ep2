@@ -74,16 +74,69 @@
   associando-o a intervalos de tempo corresponde a função \textbf{Map} desejada;
   enquanto que a parte de juntar essas medidas para compor o DPS médio
   (ponderado pelo tamanho dos intervalos de tempo de cada medida) corresponde à
-  função \textbf{Reduce}. A função \textbf{Shuffle} apenas juntará medidas,
-  somando a variação de tempo total e combinando o DPS usando como peso as
-  variações de tempo individuais.
+  função \textbf{Reduce}. A função \textbf{Shuffle} faz o mesmo que a
+  \textbf{Reduce}.
   
   Segue uma descrição mais precisa de cada uma dessas etapas.
   
   \subsection{Função \textbf{Map}}
   
-  \subsection{Função \textbf{Shuffle}}
+    Assim como no exemplo do WordCount, os pares chave-valor de entrada para
+    nossa função \textbf{Map} serão do tipo \verb$(Arquivo, Texto)$. Já os
+    pares de saída serão do tipo \verb$(Nome, Medida)$, onde \verb$Medida$ será
+    um valor de DPS associado a um intervalo de tempo (ou seja, dois números).
+    
+    Pseudo-código:
+    
+    \begin{verbatim}
+    +-------------------------------------------------------+
+    |  DPS-Map (Arquivo, Texto, Contexto):                  |
+    |    P <- {}; // personagens que causaram dano          |
+    |    D <- {}; // dano total de cada personagem          |
+    |    T <- {}; // horário do primeiro dano do personagem |
+    |    para cada linha em Texto:                          |
+    |      se linha for uma entrada de dano:                |
+    |        p <- nome do personagem que causou o dano;     |
+    |        d <- dano causado;                             |
+    |        t <- horário do dano;                          |
+    |        se p não está em P:                            |
+    |          P <- P u {p};                                |
+    |          D[p] <- d;                                   |
+    |          T[p] <- t;                                   |
+    |        caso contrário:                                |
+    |          D[p] <- D[p] + d;                            |
+    |    f <- horário da última linha do Texto;             |
+    |    para cada p em P:                                  |
+    |      dt <- f - T[p];                                  |
+    |      Medida <- (D[p]/dt, dt);                         |
+    |      passar o par (p, Medida) para o Contexto;        |
+    +-------------------------------------------------------+
+    \end{verbatim}
   
   \subsection{Função \textbf{Reduce}}
+  
+    A função \textbf{Reduce} reduz várias medidas de um mesmo personagem para a
+    média total do FPS dele. Cada medida de FPS é ponderada pela variação de
+    tempo associada a ela. Assim, os pares chave-valor de entrada para ela serão
+    do tipo \verb$(Nome, Medidas)$ - onde \verb$Medidas$ é uma lista de medidas
+    -, e os de saída serão do tipo \verb$(Nome, DPS)$ - onde \verb$DPS$ é na
+    verdade a média total do DPS do personagem.
+    
+    Pseudo-código:
+    
+    \begin{verbatim}
+    +-------------------------------------------------------+
+    |  DPS-Reduce (Nome, Medidas, Contexto):                |
+    |    D <- 0; // DPS total do personagem                 |
+    |    T <- 0; // tempo de combate total do personagem    |
+    |    para cada Medida em Medidas:                       |
+    |      // Sendo que:                                    |
+    |      //   Medida[0] --> DPS                           |
+    |      //   Medida[1] --> dt                            |
+    |      D <- D + Medida[0]*Medida[1];                    |
+    |      T <- T + Medida[1];                              |
+    |    passar o par (D, T) para o Contexto;               |
+    +-------------------------------------------------------+
+    \end{verbatim}
 
 \end{document}

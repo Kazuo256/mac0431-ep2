@@ -1,0 +1,6 @@
+*.aux
+*.log
+*.toc
+/proposta.pdf
+*~
+.*.swp

@@ -4,3 +4,7 @@
 /proposta.pdf
 *~
 .*.swp
+*.nav
+*.out
+*.snm
+/slides.pdf

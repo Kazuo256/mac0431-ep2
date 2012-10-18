@@ -16,7 +16,7 @@
 
 \frame{\titlepage}
 
-\section{Introdução}
+\section{1. Introdução}
 
 \frame{
   \begin{center}
@@ -59,8 +59,96 @@
   Relatórios de combate gerados automaticamente pelo jogo!
 }
 
-\section{O Problema}
+\section{2. O Problema}
 
-\section{Abordagem}
+\frame{
+  \begin{center}
+    \LARGE 2. O Problema
+  \end{center}
+}
+
+\frame{
+  \underline{\Large Entrada:}
+  
+  \pause
+  \hspace{10pt}
+  Relatório de combate gerado pelo jogo. Mais especificamente, as linhas que
+  relatam danos. Elas contêm as seguintes informações:
+  
+  \begin{itemize}
+    \pause
+    \item Horário em que o dano foi causado.
+    \pause
+    \item Que personagem causou o dano.
+    \pause
+    \item Que personagem recebeu o dano.
+    \pause
+    \item Quantos pontos de dano foram causados.
+  \end{itemize}
+}
+
+\frame{
+  \underline{\Large Saída:}
+  
+  \pause
+  \hspace{10pt}
+  Uma listagem indicando para cada personagem citado na base de
+  dados:
+  
+  \begin{itemize}
+    \pause
+    \item Nome do personagem.
+    \pause
+    \item DPS médio total do personagem.
+  \end{itemize}
+}
+
+\section{3. Abordagem}
+
+\frame{
+  \begin{center}
+    \LARGE 3. Abordagem
+  \end{center}
+}
+
+\begin{frame}[fragile]
+  \underline{\Large Função \textbf{Map}:}
+  
+  \vspace{4pt}
+  \begin{itemize}
+    \pause
+    \item[Recebe] Par \verb$(Arquivo, Texto)$, como no WordCount.
+    \pause
+    \item[Devolve] Pares \verb$(Nome, Medida)$.
+  \end{itemize}
+  \pause
+  \hspace{10pt}
+  Onde \verb$Nome$ é o nome de um personagem e \verb$Medida$ é um par ordenado
+  de dois números, \verb$(DPS, dt)$, com \verb$DPS$ sendo um DPS observado desse
+  personagem no relatório e \verb$dt$ o intervalo de tempo no qual ele teve esse
+  DPS.
+\end{frame}
+
+\begin{frame}[fragile]
+  \underline{\Large Função \textbf{Reduce}:}
+  
+  \vspace{4pt}
+  \begin{itemize}
+    \pause
+    \item[Recebe] Par \verb$(Nome, Medidas)$.
+    \pause
+    \item[Devolve] Par \verb$(Nome, DPS)$.
+  \end{itemize}
+  \pause
+  \hspace{10pt}
+  Onde \verb$Medidas$ é uma lista de medidas geradas pela função \textbf{Map} e
+  \verb$DPS$ é o DPS médio total do personagem.
+  
+  \pause
+  \hspace{10pt}
+  O DPS médio total é na verdade a média ponderada das várias medidas de DPS
+  usando as variações de tempo de cada uma delas como peso.
+\end{frame}
+
 
 \end{document}

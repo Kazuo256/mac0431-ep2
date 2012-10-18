@@ -10,10 +10,6 @@
 \begin{document}
 
 \maketitle
-%\tableofcontents
-
-%\begin{abstract}
-%\end{abstract}
 
 \section{Introdução}
 
@@ -23,14 +19,71 @@
   seus personagens virtuais de maneira a otimizar sua eficácia em combate.
   
   Um dos principais indicadores dessa eficácia é o DPS (Dano por Segundo ou
-  \textit{Damage per Second}). Nossa proposta é de usar os relatórios de combate
-  gerados automaticamente pelo jogo como base da dados para extração do DPS de
-  vários personagens.
+  \textit{Damage per Second}). No jogo, dano é quantificado numericamente, sendo
+  possível, portanto, calcular o DPS dividindo os pontos de dano que um
+  determinado personagem causou pelo intervalo de tempo que ele permaneceu ativo
+  em combate.
+  
+  Além disso, o próprio jogo oferece a opção de gerar automaticamente relátorios
+  dos combates nos quais o jogador participa. Eles contêm diversas informações,
+  inclusive o dano causado pelos personagens que participaram do combate.
+  Nossa proposta é de usar esses relatórios de combate como base da dados para
+  extração do DPS médio de vários personagens.
 
 \section{O Problema}
 
+  Um exemplo de relatório de combate gerado pelo jogo \textit{World of Warcraft}
+  pode ser visto no arquivo \textbf{\LARGE{TODO}}. Parte do trabalho envolverá
+  um estudo sobre como os danos de combate são expressos nesses relatórios, mas
+  sabe-se que as entradas de dano contêm os seguintes dados:
   
+  \begin{itemize}
+  
+    \item Horário em que o dano foi causado.
+    \item Que personagem causou o dano.
+    \item Que personagem recebeu o dano.
+    \item Quantos pontos de dano foram causados.
+  
+  \end{itemize}
+  
+  Dados vários relatórios gerados pelo jogo (ou seja, relatos de vários combates
+  com diversos personagens) queremos gerar uma lista de itens contendo as
+  seguintes informações de cada personagem citado nos relatórios:
+  
+  \begin{itemize}
+  
+    \item Nome do personagem.
+    \item DPS médio do personagem.
+  
+  \end{itemize}
+  
+  Os argumentos que o programa receberá serão simplesmente a pasta que contém os
+  relatórios a serem usados como entrada, e a pasta na qual deverá ser escrito o
+  arquivo de saída contendo a listagem do DPS médio dos personagens.
 
 \section{Abordagem}
+
+  A ideia básica da nossa solução para o problema é encontrar nos relatórios do
+  jogo os intervalos de tempo nos quais cada personagem permaneceu ativo em
+  combate e somar a quantidade de dano que ele causou nesse intervalo. Com isso,
+  teremos uma medida do DPS dele para uma certa variação de tempo. Juntando
+  todas as medidas desse tipo que podem ser extraídas da base de dados,
+  calculamos o DPS médio do personagem.
+  
+  Como é de se imaginar, a parte que envolve extrair o DPS dos personagens
+  associando-o a intervalos de tempo corresponde a função \textbf{Map} desejada;
+  enquanto que a parte de juntar essas medidas para compor o DPS médio
+  (ponderado pelo tamanho dos intervalos de tempo de cada medida) corresponde à
+  função \textbf{Reduce}. A função \textbf{Shuffle} apenas juntará medidas,
+  somando a variação de tempo total e combinando o DPS usando como peso as
+  variações de tempo individuais.
+  
+  Segue uma descrição mais precisa de cada uma dessas etapas.
+  
+  \subsection{Função \textbf{Map}}
+  
+  \subsection{Função \textbf{Shuffle}}
+  
+  \subsection{Função \textbf{Reduce}}
 
 \end{document}

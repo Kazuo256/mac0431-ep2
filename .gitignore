@@ -10,3 +10,5 @@
 /slides.pdf
 *.vrb
 /hadoop-stuff
+/classes
+/ep2.jar

@@ -26,6 +26,8 @@ public class Parser {
 		String[] entryTypeAffixes = entryParams[0].split("_");
 		if (!isDamageEntry(entryTypeAffixes))
 			return null;
+		if (entryTypeAffixes[0].equals("ENVIRONMENTAL"))
+			return null;
 		Calendar time = new GregorianCalendar(1970, 0, 0);
 		parseDate(time, dateText);
 		parseTime(time, timeText);

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package usp.mac0431.ep2;
+package ep2;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -18,10 +18,12 @@ public class Parser {
 	}
 
 	public Damage parseDamage(String line) {
-		StringTokenizer tokens = new StringTokenizer(line, ",");
-		long time = parseDate(tokens.nextToken(" "))
-				+ parseTime(tokens.nextToken(" "));
+		StringTokenizer tokens = new StringTokenizer(line, " ");
+		String dateText = tokens.nextToken();
+		String timeText = tokens.nextToken();
 		
+		
+		long time = parseDate(dateText) + parseTime(timeText);
 		return new Damage("", time, 0l);
 	}
 
@@ -34,7 +36,7 @@ public class Parser {
 	}
 
 	private long parseTime(String timeText) {
-		StringTokenizer timeTokens = new StringTokenizer(timeText, ":.");
+		StringTokenizer timeTokens = new StringTokenizer(timeText, ":");
 		int hour = Integer.parseInt(timeTokens.nextToken());
 		int min = Integer.parseInt(timeTokens.nextToken());
 		int second = Integer.parseInt(timeTokens.nextToken());

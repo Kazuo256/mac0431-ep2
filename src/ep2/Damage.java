@@ -1,7 +1,7 @@
 /**
  * 
  */
-package usp.mac0431.ep2;
+package ep2;
 
 /** <p> Represents damage dealt.</p>
  *

@@ -3,8 +3,10 @@ package ep2;
 import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+import org.apache.commons.math3.util.Pair;
 
 public class DamagePerSecond {
+
 	private HashMap<String, SummaryStatistics> dps = new HashMap<String, SummaryStatistics>();
 	private HashMap<String, Long> tempoNoJogo = new HashMap<String, Long>();
 	private HashMap<String, Long> tempoReal = new HashMap<String, Long>();
@@ -18,7 +20,8 @@ public class DamagePerSecond {
 		this.getDps(personagem).addValue(dano);
 		long tempoReal = tempo - this.getTempoNoJogo(personagem);
 		this.tempoNoJogo.put(personagem, tempo);
-		this.tempoReal.put(personagem, this.getTempoReal(personagem)+tempoReal);
+		this.tempoReal.put(personagem, this.getTempoReal(personagem)
+				+ tempoReal);
 	}
 
 	public void revivePersonagem(String personagem, long tempo) {
@@ -27,11 +30,10 @@ public class DamagePerSecond {
 				- (tempoReal - this.getTempoReal(personagem)));
 	}
 
-	public double geraEstatistica(String personagem) {
-		if (tempoReal.containsKey(personagem)) {
-			return dps.get(personagem).getSum() / tempoReal.get(personagem);
-		}
-		return 0.0;
+	public Pair<Long, Long> geraMap(String personagem) {
+		Pair<Long, Long> danoTempo = new Pair<Long, Long>((long) this.getDps(
+				personagem).getSum(), this.getTempoReal(personagem));
+		return danoTempo;
 	}
 
 	private SummaryStatistics getDps(String personagem) {

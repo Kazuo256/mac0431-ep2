@@ -37,7 +37,6 @@ public class Map extends MapReduceBase implements
 			dps.adicionaDano(dmg.getSource(), dmg.getAmount(), dmg.getTime());
 		}
 		word.set("");
-		output.collect(word, new DoubleWritable(dps.geraEstatistica("")));
 	}
 
 }

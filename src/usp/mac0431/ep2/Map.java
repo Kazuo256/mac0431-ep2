@@ -19,19 +19,18 @@ import org.apache.hadoop.mapred.Reporter;
  * 
  */
 public class Map extends MapReduceBase implements
-		Mapper<LongWritable, Text, Text, IntWritable> {
+		Mapper<Object, Text, Text, IntWritable> {
 
 	private final static IntWritable one = new IntWritable(1);
 	private Text word = new Text();
 
 	@Override
-	public void map(LongWritable key, Text value,
+	public void map(Object key, Text value,
 			OutputCollector<Text, IntWritable> output, Reporter reporter)
 			throws IOException {
-		String line = value.toString();
-		StringTokenizer tokenizer = new StringTokenizer(line);
-		while (tokenizer.hasMoreTokens()) {
-			word.set(tokenizer.nextToken());
+		StringTokenizer lines = new StringTokenizer(value.toString(), "\n\r");
+		while (lines.hasMoreTokens()) {
+			word.set(lines.nextToken());
 			output.collect(word, one);
 		}
 	}

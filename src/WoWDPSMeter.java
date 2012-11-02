@@ -14,7 +14,7 @@ public class WoWDPSMeter {
 		conf.setJobName("dpsmeter");
 
 		conf.setOutputKeyClass(Text.class);
-		conf.setOutputValueClass(IntWritable.class);
+		conf.setOutputValueClass(DoubleWritable.class);
 
 		conf.setMapperClass(Map.class);
 		conf.setCombinerClass(Reduce.class);

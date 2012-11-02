@@ -39,8 +39,8 @@ public class Parser {
 		StringTokenizer timeTokens = new StringTokenizer(timeText, ":");
 		int hour = Integer.parseInt(timeTokens.nextToken());
 		int min = Integer.parseInt(timeTokens.nextToken());
-		int second = Integer.parseInt(timeTokens.nextToken());
-		Calendar time = new GregorianCalendar(0, 0, 0, hour, min, second);
+		float second = Float.parseFloat(timeTokens.nextToken());
+		Calendar time = new GregorianCalendar(0, 0, 0, hour, min, (int)second);
 		return time.getTimeInMillis() * 1000l;
 	}
 

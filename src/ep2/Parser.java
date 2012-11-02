@@ -26,36 +26,34 @@ public class Parser {
 		String[] entryTypeAffixes = entryParams[0].split("_");
 		if (!isDamageEntry(entryTypeAffixes))
 			return null;
-		long time = parseDate(dateText) + parseTime(timeText);
+		Calendar time = new GregorianCalendar(1970, 0, 0);
+		parseDate(time, dateText);
+		parseTime(time, timeText);
 		String name = entryParams[2];
-		int offset = 14;
-		if (entryTypeAffixes[0] == "SWING")
-			offset -= 3;
-		else if (entryTypeAffixes[0] == "ENVIRONMENTAL")
-			offset -= 2;
-		long amount = Long.parseLong(entryParams[offset]);
-		return new Damage(name, time, amount);
+		long amount = Long.parseLong(entryParams[9]);
+		return new Damage(name, time.getTimeInMillis(), amount);
 	}
 	
 	private boolean isDamageEntry (final String[] entryTypeAffixes) {
 		return entryTypeAffixes[entryTypeAffixes.length-1].equals("DAMAGE");
 	}
 
-	private long parseDate(String dateText) {
+	private void parseDate(Calendar time, String dateText) {
 		StringTokenizer dateTokens = new StringTokenizer(dateText, "/");
 		int month = Integer.parseInt(dateTokens.nextToken());
 		int day = Integer.parseInt(dateTokens.nextToken());
-		Calendar date = new GregorianCalendar(0, month, day);
-		return date.getTimeInMillis() * 1000l;
+		time.set(Calendar.MONTH, month);
+		time.set(Calendar.DAY_OF_MONTH, day);
 	}
 
-	private long parseTime(String timeText) {
+	private void parseTime(Calendar time, String timeText) {
 		StringTokenizer timeTokens = new StringTokenizer(timeText, ":");
 		int hour = Integer.parseInt(timeTokens.nextToken());
 		int min = Integer.parseInt(timeTokens.nextToken());
 		float second = Float.parseFloat(timeTokens.nextToken());
-		Calendar time = new GregorianCalendar(0, 0, 0, hour, min, (int)second);
-		return time.getTimeInMillis() * 1000l;
+		time.set(Calendar.HOUR_OF_DAY, hour);
+		time.set(Calendar.MINUTE, min);
+		time.set(Calendar.SECOND, (int)second);
 	}
 
 }

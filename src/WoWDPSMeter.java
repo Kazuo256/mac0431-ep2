@@ -5,12 +5,12 @@ import org.apache.hadoop.mapred.*;
 import usp.mac0431.ep2.Map;
 import usp.mac0431.ep2.Reduce;
 
-public class WordCount {
+public class WoWDPSMeter {
 
 
 	public static void main(String[] args) throws Exception {
-		JobConf conf = new JobConf(WordCount.class);
-		conf.setJobName("wordcount");
+		JobConf conf = new JobConf(WoWDPSMeter.class);
+		conf.setJobName("dpsmeter");
 
 		conf.setOutputKeyClass(Text.class);
 		conf.setOutputValueClass(IntWritable.class);

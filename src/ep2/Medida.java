@@ -7,8 +7,8 @@ import java.io.IOException;
 import org.apache.hadoop.io.Writable;
 
 public class Medida implements Writable{
-	private Long dano;
-	private Long tempo;
+	private long dano;
+	private long tempo;
 	
 	public Long getDano() {
 		return dano;

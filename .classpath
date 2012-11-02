@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/kazuo/Workspaces/usp/2012.2/MAC0431/ep2/lib/hadoop-client-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/home/kazuo/Workspaces/usp/2012.2/MAC0431/ep2/lib/hadoop-core-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/home/kazuo/Workspaces/usp/2012.2/MAC0431/ep2/lib/hadoop-minicluster-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/home/kazuo/Workspaces/usp/2012.2/MAC0431/ep2/lib/hadoop-tools-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-client-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-core-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-minicluster-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-tools-1.0.4.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

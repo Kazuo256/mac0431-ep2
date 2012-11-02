@@ -33,7 +33,7 @@ public class Parser {
 		parseTime(time, timeText);
 		String name = entryParams[2];
 		long amount = Long.parseLong(entryParams[9]);
-		return new Damage(name, time.getTimeInMillis()*1000, amount);
+		return new Damage(name, time.getTimeInMillis()/1000, amount);
 	}
 	
 	private boolean isDamageEntry (final String[] entryTypeAffixes) {

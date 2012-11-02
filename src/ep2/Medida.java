@@ -10,7 +10,7 @@ public class Medida implements Writable{
 	private long dano;
 	private long tempo;
 	
-	public Long getDano() {
+	public long getDano() {
 		return dano;
 	}
 
@@ -18,11 +18,11 @@ public class Medida implements Writable{
 		this.dano = dano;
 	}
 
-	public Long getTempo() {
+	public long getTempo() {
 		return tempo;
 	}
 
-	public void setTempo(Long tempo) {
+	public void setTempo(long tempo) {
 		this.tempo = tempo;
 	}
 
@@ -32,6 +32,8 @@ public class Medida implements Writable{
 	}
 	
 	public double calculaDPS() {
+		if(this.tempo == 0)
+			return 0.0;
 		return this.dano/this.tempo;
 	}
 	

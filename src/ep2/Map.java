@@ -25,13 +25,13 @@ public class Map extends MapReduceBase implements
 	private DoubleWritable number = new DoubleWritable(0.0);
 	private Text name = new Text();
 	private Set<String> characters = new HashSet<String>();
+	private Parser parser = new Parser();
 
 	@Override
 	public void map(Object key, Text value,
 			OutputCollector<Text, DoubleWritable> output, Reporter reporter)
 			throws IOException {
 		StringTokenizer lines = new StringTokenizer(value.toString(), "\n\r");
-		Parser parser = new Parser();
 		DamagePerSecond dps = null;
 		while (lines.hasMoreTokens()) {
 			Damage dmg = parser.parseDamage(lines.nextToken());
@@ -42,7 +42,7 @@ public class Map extends MapReduceBase implements
 			characters.add(dmg.getSource());
 			dps.adicionaDano(dmg.getSource(), dmg.getAmount(), dmg.getTime());
 		}
-		if (dps != null) 
+		if (dps != null)
 			for (String character : characters) {
 				name.set(character);
 				number.set(dps.geraEstatistica(character));

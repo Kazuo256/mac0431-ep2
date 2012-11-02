@@ -30,10 +30,11 @@ public class DamagePerSecond {
 				- (tempoReal - this.getTempoReal(personagem)));
 	}
 
-	public Pair<Long, Long> geraMap(String personagem) {
-		Pair<Long, Long> danoTempo = new Pair<Long, Long>((long) this.getDps(
-				personagem).getSum(), this.getTempoReal(personagem));
-		return danoTempo;
+	public Medida geraMedida(String personagem) {
+		Medida medida = new Medida();
+		medida.setDano((long) this.getDps(personagem).getSum());
+		medida.setTempo(this.getTempoReal(personagem));
+		return medida;
 	}
 
 	private SummaryStatistics getDps(String personagem) {

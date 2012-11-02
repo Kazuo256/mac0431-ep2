@@ -22,7 +22,7 @@ import org.apache.hadoop.mapred.Reporter;
 public class Map extends MapReduceBase implements
 		Mapper<Object, Text, Text, ObjectWritable> {
 
-	private ObjectWritable number = new ObjectWritable(0.0);
+	private ObjectWritable measure = new ObjectWritable(0.0);
 	private Text name = new Text();
 	private Set<String> characters = new HashSet<String>();
 	private Parser parser = new Parser();
@@ -32,7 +32,6 @@ public class Map extends MapReduceBase implements
 			OutputCollector<Text, ObjectWritable> output, Reporter reporter)
 			throws IOException {
 		StringTokenizer lines = new StringTokenizer(value.toString(), "\n\r");
-		Parser parser = new Parser();
 		DamagePerSecond dps = null;
 		while (lines.hasMoreTokens()) {
 			Damage dmg = parser.parseDamage(lines.nextToken());
@@ -46,8 +45,8 @@ public class Map extends MapReduceBase implements
 		if (dps != null)
 			for (String character : characters) {
 				name.set(character);
-				number.set(dps.geraMedida(character));
-				output.collect(name, number);
+				measure.set(dps.geraMedida(character));
+				output.collect(name, measure);
 			}
 	}
 

@@ -26,18 +26,17 @@ public class Map extends MapReduceBase implements
 	private Text name = new Text();
 	private Set<String> characters = new HashSet<String>();
 	private Parser parser = new Parser();
+	private DamagePerSecond dps = null;
 
 	@Override
 	public void map(Object key, Text value,
 			OutputCollector<Text, ObjectWritable> output, Reporter reporter)
 			throws IOException {
 		StringTokenizer lines = new StringTokenizer(value.toString(), "\n\r");
-		DamagePerSecond dps = null;
 		while (lines.hasMoreTokens()) {
 			Damage dmg = parser.parseDamage(lines.nextToken());
 			if (dmg == null)
 				continue;
-			System.out.println(dmg.getTime());
 			if (dps == null)
 				dps = new DamagePerSecond(dmg.getTime());
 			characters.add(dmg.getSource());

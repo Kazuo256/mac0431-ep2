@@ -3,7 +3,6 @@ package ep2;
 import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-import org.apache.commons.math3.util.Pair;
 
 public class DamagePerSecond {
 
@@ -32,8 +31,8 @@ public class DamagePerSecond {
 
 	public Medida geraMedida(String personagem) {
 		Medida medida = new Medida();
-		medida.setDano((long) this.getDps(personagem).getSum());
-		medida.setTempo(this.getTempoReal(personagem));
+		medida.setDano((long) dps.get(personagem).getSum());
+		medida.setTempo(tempoReal.get(personagem));
 		return medida;
 	}
 

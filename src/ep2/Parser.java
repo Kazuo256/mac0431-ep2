@@ -21,10 +21,16 @@ public class Parser {
 		StringTokenizer tokens = new StringTokenizer(line, " ");
 		String dateText = tokens.nextToken();
 		String timeText = tokens.nextToken();
-		
-		
+		String entry = tokens.nextToken();
+		StringTokenizer entryTokens = new StringTokenizer(entry, ",");
+		String entry_type = entryTokens.nextToken();
 		long time = parseDate(dateText) + parseTime(timeText);
 		return new Damage("", time, 0l);
+	}
+	
+	private boolean isDamageEntry (String entryText) {
+		StringTokenizer entryTokenizer;
+		return true;
 	}
 
 	private long parseDate(String dateText) {

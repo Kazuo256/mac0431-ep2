@@ -32,6 +32,7 @@ public class Map extends MapReduceBase implements
 		DamagePerSecond dps = null;
 		while (lines.hasMoreTokens()) {
 			Damage dmg = parser.parseDamage(lines.nextToken());
+			if (dmg == null) continue;
 			if (dps == null)
 				dps = new DamagePerSecond(dmg.getTime());
 			dps.adicionaDano(dmg.getSource(), dmg.getAmount(), dmg.getTime());

@@ -31,6 +31,10 @@ public class Medida implements Writable{
 		this.tempo += arg.getTempo();
 	}
 	
+	public double calculaDPS() {
+		return this.dano/this.tempo;
+	}
+	
 	@Override
 	public void readFields(DataInput arg0) throws IOException {
 		dano = arg0.readLong();

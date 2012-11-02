@@ -4,6 +4,7 @@ import org.apache.hadoop.mapred.*;
 
 import ep2.Map;
 import ep2.Reduce;
+import ep2.Shuffle;
 
 
 public class WoWDPSMeter {
@@ -17,7 +18,7 @@ public class WoWDPSMeter {
 		conf.setOutputValueClass(ObjectWritable.class);
 
 		conf.setMapperClass(Map.class);
-		conf.setCombinerClass(Reduce.class);
+		conf.setCombinerClass(Shuffle.class);
 		conf.setReducerClass(Reduce.class);
 
 		conf.setInputFormat(TextInputFormat.class);

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package usp.mac0431.ep2;
+package ep2;
 
 import java.io.IOException;
 import java.util.StringTokenizer;

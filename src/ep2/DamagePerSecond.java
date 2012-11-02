@@ -1,14 +1,14 @@
-package usp.mac0431.ep2;
+package ep2;
 
 import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 public class DamagePerSecond {
-	HashMap<String, SummaryStatistics> dps = new HashMap<String, SummaryStatistics>();
-	HashMap<String, Long> tempoNoJogo = new HashMap<String, Long>();
-	HashMap<String, Long> tempoReal = new HashMap<String, Long>();
-	Long tempoInicial;
+	private HashMap<String, SummaryStatistics> dps = new HashMap<String, SummaryStatistics>();
+	private HashMap<String, Long> tempoNoJogo = new HashMap<String, Long>();
+	private HashMap<String, Long> tempoReal = new HashMap<String, Long>();
+	private Long tempoInicial;
 
 	public DamagePerSecond(Long tempoInicial) {
 		this.tempoInicial = tempoInicial;
@@ -18,7 +18,7 @@ public class DamagePerSecond {
 		this.getDps(personagem).addValue(dano);
 		long tempoReal = tempo - this.getTempoNoJogo(personagem);
 		this.tempoNoJogo.put(personagem, tempo);
-		this.tempoReal.put(personagem, tempoReal);
+		this.tempoReal.put(personagem, this.getTempoReal(personagem)+tempoReal);
 	}
 
 	public void revivePersonagem(String personagem, long tempo) {

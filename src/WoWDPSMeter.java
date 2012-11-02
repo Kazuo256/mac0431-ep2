@@ -2,8 +2,9 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapred.*;
 
-import usp.mac0431.ep2.Map;
-import usp.mac0431.ep2.Reduce;
+import ep2.Map;
+import ep2.Reduce;
+
 
 public class WoWDPSMeter {
 

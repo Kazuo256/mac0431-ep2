@@ -2,10 +2,8 @@ import java.io.IOException;
 import java.util.*;
         
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.conf.*;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapred.*;
-import org.apache.hadoop.util.*;
         
 public class WordCount {
         
@@ -47,11 +45,6 @@ public class WordCount {
         
     conf.setInputFormat(TextInputFormat.class);
     conf.setOutputFormat(TextOutputFormat.class);
-        
-    /* Deprecated ?
-     * conf.setInputPath(new Path(args[0]));
-     * conf.setOutputPath(new Path(args[1]));
-     */
 
     FileInputFormat.setInputPaths(conf, new Path(args[0]));
     FileOutputFormat.setOutputPath(conf, new Path(args[1]));

@@ -22,7 +22,7 @@ import org.apache.hadoop.mapred.Reporter;
 public class Map extends MapReduceBase implements
 		Mapper<Object, Text, Text, DoubleWritable> {
 
-	private final static DoubleWritable one = new DoubleWritable(1);
+	private DoubleWritable number = new DoubleWritable(0.0);
 	private Text name = new Text();
 	private Set<String> characters = new HashSet<String>();
 
@@ -42,11 +42,12 @@ public class Map extends MapReduceBase implements
 			characters.add(dmg.getSource());
 			dps.adicionaDano(dmg.getSource(), dmg.getAmount(), dmg.getTime());
 		}
-		for (String character : characters) {
-			name.set(character);
-			output.collect(name,
-					new DoubleWritable(dps.geraEstatistica(character)));
-		}
+		if (dps != null) 
+			for (String character : characters) {
+				name.set(character);
+				number.set(dps.geraEstatistica(character));
+				output.collect(name, number);
+			}
 	}
 
 }

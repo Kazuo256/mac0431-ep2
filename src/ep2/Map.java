@@ -4,6 +4,8 @@
 package ep2;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.io.DoubleWritable;
@@ -21,7 +23,8 @@ public class Map extends MapReduceBase implements
 		Mapper<Object, Text, Text, DoubleWritable> {
 
 	private final static DoubleWritable one = new DoubleWritable(1);
-	private Text word = new Text();
+	private Text name = new Text();
+	private Set<String> characters = new HashSet<String>();
 
 	@Override
 	public void map(Object key, Text value,
@@ -32,13 +35,18 @@ public class Map extends MapReduceBase implements
 		DamagePerSecond dps = null;
 		while (lines.hasMoreTokens()) {
 			Damage dmg = parser.parseDamage(lines.nextToken());
-			if (dmg == null) continue;
+			if (dmg == null)
+				continue;
 			if (dps == null)
 				dps = new DamagePerSecond(dmg.getTime());
+			characters.add(dmg.getSource());
 			dps.adicionaDano(dmg.getSource(), dmg.getAmount(), dmg.getTime());
 		}
-		word.set("");
-		output.collect(word, new DoubleWritable(dps.geraEstatistica("")));
+		for (String character : characters) {
+			name.set(character);
+			output.collect(name,
+					new DoubleWritable(dps.geraEstatistica(character)));
+		}
 	}
 
 }

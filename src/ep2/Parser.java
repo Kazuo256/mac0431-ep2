@@ -21,16 +21,24 @@ public class Parser {
 		StringTokenizer tokens = new StringTokenizer(line, " ");
 		String dateText = tokens.nextToken();
 		String timeText = tokens.nextToken();
-		String entry = tokens.nextToken();
-		StringTokenizer entryTokens = new StringTokenizer(entry, ",");
-		String entry_type = entryTokens.nextToken();
+		String entryText = tokens.nextToken("\n\r");
+		String[] entryParams = entryText.split(",");
+		String[] entryTypeAffixes = entryParams[0].split("_");
+		if (!isDamageEntry(entryTypeAffixes))
+			return null;
 		long time = parseDate(dateText) + parseTime(timeText);
-		return new Damage("", time, 0l);
+		String name = entryParams[2];
+		int offset = 14;
+		if (entryTypeAffixes[0] == "SWING")
+			offset -= 3;
+		else if (entryTypeAffixes[0] == "ENVIRONMENTAL")
+			offset -= 2;
+		long amount = Long.parseLong(entryParams[offset]);
+		return new Damage(name, time, amount);
 	}
 	
-	private boolean isDamageEntry (String entryText) {
-		StringTokenizer entryTokenizer;
-		return true;
+	private boolean isDamageEntry (final String[] entryTypeAffixes) {
+		return entryTypeAffixes[entryTypeAffixes.length-1].equals("DAMAGE");
 	}
 
 	private long parseDate(String dateText) {

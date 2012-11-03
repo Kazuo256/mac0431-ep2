@@ -31,7 +31,7 @@ public class DamageMeasurer {
 	public void ressurrectCharacter(String character, long time) {
 		long timeSinceLast = time - this.getLastDmgTime(character);
 		this.combatTime.put(character, this.getCombatTime(character)
-				- (timeSinceLast - this.getCombatTime(character)));
+				- timeSinceLast);
 	}
 
 	public Measure generateMeasure(String character) {

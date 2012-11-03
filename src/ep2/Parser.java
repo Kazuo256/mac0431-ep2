@@ -16,19 +16,79 @@ import java.util.StringTokenizer;
  * </p>
  */
 public class Parser {
+
+	private static class Entry {
+
+		// Índices importantes na entrada de dano
+		private final static int SOURCENAME_INDEX = 2;
+		private final static int TARGETNAME_INDEX = 6;
+		private final static int AMOUNT_INDEX = 9;
+
+		// Índice do prefixo do tipo de entrada
+		private final static int PREFIX_INDEX = 0;
+		
+		public long time;
+		public String[] entryParams;
+		public String[] entryTypeAffixes;
+
+		Entry(long time, String[] entryParams, String[] entryTypeAffixes) {
+			this.time = time;
+			this.entryParams = entryParams;
+			this.entryTypeAffixes = entryTypeAffixes;
+		}
+
+		public boolean isDamageEntry() {
+			return entryTypeAffixes[entryTypeAffixes.length - 1]
+					.equals("DAMAGE");
+		}
+
+		public boolean isResurrectEntry() {
+			return entryTypeAffixes[entryTypeAffixes.length - 1]
+					.equals("RESURRECT");
+		}
+		
+		public String getTypePrefix() {
+			return entryTypeAffixes[PREFIX_INDEX];
+		}
+		
+		public String getSourceName() {
+			return entryParams[SOURCENAME_INDEX];
+		}
+		
+		public String getTargetName() {
+			return entryParams[TARGETNAME_INDEX];
+		}
+		
+		public String getAmount() {
+			return entryParams[AMOUNT_INDEX];
+		}
+	}
 	
-	// Índices importantes na entrada de dano
 	private final static int ENTRYTYPE_INDEX = 0;
-	private final static int SOURCENAME_INDEX = 2;
-	private final static int AMOUNT_INDEX = 9;
-	
-	// Índice do prefixo do tipo de entrada
-	private final static int PREFIX_INDEX = 0;
-	
+
 	// Ano base usado para as medições de tempo
 	private final static int EPOCH = 1970;
 
 	public Damage parseDamage(String line) {
+		Entry entry = parseEntry(line);
+		if (!entry.isDamageEntry())
+			return null;
+		if (entry.getTypePrefix().equals("  ENVIRONMENTAL"))
+			return null;
+		String name;
+		long amount;
+		if (!entry.isResurrectEntry()) {
+			name = entry.getSourceName();
+			amount = Long.parseLong(entry.getAmount());
+		} else {
+			System.out.println("RESS");
+			name = entry.getTargetName();
+			amount = -1;
+		}
+		return new Damage(name, entry.time, amount);
+	}
+
+	private Entry parseEntry(String line) {
 		// Como sempre, código para analisar strings é uma bagunça.
 		StringTokenizer tokens = new StringTokenizer(line, " ");
 		String dateText = tokens.nextToken();
@@ -36,20 +96,11 @@ public class Parser {
 		String entryText = tokens.nextToken("\n\r");
 		String[] entryParams = entryText.split(",");
 		String[] entryTypeAffixes = entryParams[ENTRYTYPE_INDEX].split("_");
-		if (!isDamageEntry(entryTypeAffixes))
-			return null;
-		if (entryTypeAffixes[PREFIX_INDEX].equals("  ENVIRONMENTAL"))
-			return null;
 		Calendar time = new GregorianCalendar(EPOCH, 0, 0);
 		parseDate(time, dateText);
 		parseTime(time, timeText);
-		String name = entryParams[SOURCENAME_INDEX];
-		long amount = Long.parseLong(entryParams[AMOUNT_INDEX]);
-		return new Damage(name, time.getTimeInMillis() / 1000, amount);
-	}
-
-	private boolean isDamageEntry(final String[] entryTypeAffixes) {
-		return entryTypeAffixes[entryTypeAffixes.length - 1].equals("DAMAGE");
+		return new Entry(time.getTimeInMillis() / 1000, entryParams,
+				entryTypeAffixes);
 	}
 
 	private void parseDate(Calendar time, String dateText) {

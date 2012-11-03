@@ -44,7 +44,10 @@ public class Map extends MapReduceBase implements
 			if (dps == null)
 				dps = new DamageMeasurer(dmg.getTime());
 			characters.add(dmg.getSource());
-			dps.addDamage(dmg.getSource(), dmg.getTime(), dmg.getAmount());
+			if (dmg.getAmount() >= 0)
+				dps.addDamage(dmg.getSource(), dmg.getTime(), dmg.getAmount());
+			else
+				dps.ressurrectCharacter(dmg.getSource(), dmg.getTime());
 		}
 		if (dps != null)
 			for (String character : characters) {
@@ -53,5 +56,4 @@ public class Map extends MapReduceBase implements
 				output.collect(name, measure);
 			}
 	}
-
 }

@@ -25,9 +25,9 @@ public class Shuffle extends MapReduceBase implements
 	public void reduce(Text name, Iterator<ObjectWritable> measures,
 			OutputCollector<Text, ObjectWritable> output, Reporter reporter)
 			throws IOException {
-		Medida measure = new Medida();
+		Measure measure = new Measure();
 		while (measures.hasNext()) {
-			measure.juntaMedidas((Medida) measures.next().get());
+			measure.joinMeasures((Measure) measures.next().get());
 		}
 		reducedMeasure.set(measure);
 		output.collect(name, reducedMeasure);

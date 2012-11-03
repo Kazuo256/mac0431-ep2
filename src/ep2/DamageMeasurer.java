@@ -34,10 +34,10 @@ public class DamageMeasurer {
 				- (timeSinceLast - this.getCombatTime(character)));
 	}
 
-	public Medida generateMeasure(String character) {
-		Medida measure = new Medida();
-		measure.setDano((long) damages.get(character).getSum());
-		measure.setTempo(combatTime.get(character));
+	public Measure generateMeasure(String character) {
+		Measure measure = new Measure();
+		measure.setDamage((long) damages.get(character).getSum());
+		measure.setTime(combatTime.get(character));
 		return measure;
 	}
 

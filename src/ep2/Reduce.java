@@ -26,10 +26,10 @@ public class Reduce extends MapReduceBase implements
 	public void reduce(Text name, Iterator<ObjectWritable> measures,
 			OutputCollector<Text, DoubleWritable> output, Reporter reporter)
 			throws IOException {
-		Medida measure = new Medida();
+		Measure measure = new Measure();
 		while (measures.hasNext())
-			measure.juntaMedidas((Medida) measures.next().get());
-		dps.set(measure.calculaDPS());
+			measure.joinMeasures((Measure) measures.next().get());
+		dps.set(measure.calculateDPS());
 		output.collect(name, dps);
 	}
 

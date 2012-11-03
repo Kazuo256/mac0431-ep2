@@ -30,7 +30,7 @@ public class Map extends MapReduceBase implements
 	// Analisador léxico dos relatórios gerados
 	private Parser parser = new Parser();
 	// Gerador de medidas de dano
-	private DamagePerSecond dps = null;
+	private DamageMeasurer dps = null;
 
 	@Override
 	public void map(Object key, Text value,
@@ -42,14 +42,14 @@ public class Map extends MapReduceBase implements
 			if (dmg == null)
 				continue;
 			if (dps == null)
-				dps = new DamagePerSecond(dmg.getTime());
+				dps = new DamageMeasurer(dmg.getTime());
 			characters.add(dmg.getSource());
-			dps.adicionaDano(dmg.getSource(), dmg.getAmount(), dmg.getTime());
+			dps.addDamage(dmg.getSource(), dmg.getTime(), dmg.getAmount());
 		}
 		if (dps != null)
 			for (String character : characters) {
 				name.set(character);
-				measure.set(dps.geraMedida(character));
+				measure.set(dps.generateMeasure(character));
 				output.collect(name, measure);
 			}
 	}

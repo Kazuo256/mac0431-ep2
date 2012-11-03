@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ep2;
 
 import java.io.IOException;
@@ -14,21 +11,26 @@ import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
 /**
- * 
- *
+ * <p>
+ * Classe que junta várias medidas de um mesmo personagem em uma única medida.
+ * </p>
  */
 public class Shuffle extends MapReduceBase implements
 		Reducer<Text, ObjectWritable, Text, ObjectWritable> {
 
+	// Medida de dano unificada
+	private ObjectWritable reducedMeasure = new ObjectWritable();
+
 	@Override
-	public void reduce(Text key, Iterator<ObjectWritable> values,
+	public void reduce(Text name, Iterator<ObjectWritable> measures,
 			OutputCollector<Text, ObjectWritable> output, Reporter reporter)
 			throws IOException {
-		Medida sum = new Medida();
-		while (values.hasNext()) {
-			sum.juntaMedidas((Medida) values.next().get());
+		Medida measure = new Medida();
+		while (measures.hasNext()) {
+			measure.juntaMedidas((Medida) measures.next().get());
 		}
-		output.collect(key, new ObjectWritable(sum));
+		reducedMeasure.set(measure);
+		output.collect(name, reducedMeasure);
 	}
 
 }

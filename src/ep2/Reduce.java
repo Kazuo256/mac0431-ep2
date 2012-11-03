@@ -13,12 +13,13 @@ import org.apache.hadoop.mapred.Reporter;
 
 /**
  * <p>
- * Classe que reduz várias medidas de um mesmo personagem em uma única medida.
+ * Classe que reduz várias medidas de um mesmo personagem respectivo DPS dele.
  * </p>
  */
 public class Reduce extends MapReduceBase implements
 		Reducer<Text, ObjectWritable, Text, DoubleWritable> {
 
+	// DPS do personagem
 	private DoubleWritable dps = new DoubleWritable(0.0);
 
 	@Override

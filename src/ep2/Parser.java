@@ -17,78 +17,12 @@ import java.util.StringTokenizer;
  */
 public class Parser {
 
-	private static class Entry {
-
-		// Índices importantes na entrada de dano
-		private final static int SOURCENAME_INDEX = 2;
-		private final static int TARGETNAME_INDEX = 6;
-		private final static int AMOUNT_INDEX = 9;
-
-		// Índice do prefixo do tipo de entrada
-		private final static int PREFIX_INDEX = 0;
-		
-		public long time;
-		public String[] entryParams;
-		public String[] entryTypeAffixes;
-
-		Entry(long time, String[] entryParams, String[] entryTypeAffixes) {
-			this.time = time;
-			this.entryParams = entryParams;
-			this.entryTypeAffixes = entryTypeAffixes;
-		}
-
-		public boolean isDamageEntry() {
-			return entryTypeAffixes[entryTypeAffixes.length - 1]
-					.equals("DAMAGE");
-		}
-
-		public boolean isResurrectEntry() {
-			return entryTypeAffixes[entryTypeAffixes.length - 1]
-					.equals("RESURRECT");
-		}
-		
-		public String getTypePrefix() {
-			return entryTypeAffixes[PREFIX_INDEX];
-		}
-		
-		public String getSourceName() {
-			return entryParams[SOURCENAME_INDEX];
-		}
-		
-		public String getTargetName() {
-			return entryParams[TARGETNAME_INDEX];
-		}
-		
-		public String getAmount() {
-			return entryParams[AMOUNT_INDEX];
-		}
-	}
-	
 	private final static int ENTRYTYPE_INDEX = 0;
 
 	// Ano base usado para as medições de tempo
 	private final static int EPOCH = 1970;
 
-	public Damage parseDamage(String line) {
-		Entry entry = parseEntry(line);
-		if (!entry.isDamageEntry())
-			return null;
-		if (entry.getTypePrefix().equals("  ENVIRONMENTAL"))
-			return null;
-		String name;
-		long amount;
-		if (!entry.isResurrectEntry()) {
-			name = entry.getSourceName();
-			amount = Long.parseLong(entry.getAmount());
-		} else {
-			System.out.println("RESS");
-			name = entry.getTargetName();
-			amount = -1;
-		}
-		return new Damage(name, entry.time, amount);
-	}
-
-	private Entry parseEntry(String line) {
+	public LogEntry parseEntry(String line) {
 		// Como sempre, código para analisar strings é uma bagunça.
 		StringTokenizer tokens = new StringTokenizer(line, " ");
 		String dateText = tokens.nextToken();
@@ -99,8 +33,16 @@ public class Parser {
 		Calendar time = new GregorianCalendar(EPOCH, 0, 0);
 		parseDate(time, dateText);
 		parseTime(time, timeText);
-		return new Entry(time.getTimeInMillis() / 1000, entryParams,
+		return new LogEntry(time.getTimeInMillis() / 1000, entryParams,
 				entryTypeAffixes);
+	}
+
+	public Damage parseDamage(LogEntry entry) {
+		String name;
+		long amount;
+		name = entry.getSourceName();
+		amount = Long.parseLong(entry.getAmount());
+		return new Damage(name, entry.getTime(), amount);
 	}
 
 	private void parseDate(Calendar time, String dateText) {

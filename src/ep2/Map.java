@@ -38,16 +38,15 @@ public class Map extends MapReduceBase implements
 			throws IOException {
 		StringTokenizer lines = new StringTokenizer(value.toString(), "\n\r");
 		while (lines.hasMoreTokens()) {
-			Damage dmg = parser.parseDamage(lines.nextToken());
-			if (dmg == null)
-				continue;
-			if (dps == null)
-				dps = new DamageMeasurer(dmg.getTime());
-			characters.add(dmg.getSource());
-			if (dmg.getAmount() >= 0)
+			LogEntry entry = parser.parseEntry(lines.nextToken());
+			if (entry.isDamageEntry()) {
+				Damage dmg = parser.parseDamage(entry);
+				if (dps == null)
+					dps = new DamageMeasurer(dmg.getTime());
+				characters.add(dmg.getSource());
 				dps.addDamage(dmg.getSource(), dmg.getTime(), dmg.getAmount());
-			else
-				dps.ressurrectCharacter(dmg.getSource(), dmg.getTime());
+			} /*else if (entry.isResurrectEntry() && dps != null)
+				dps.ressurrectCharacter(entry.getSourceName(), entry.getTime());*/
 		}
 		if (dps != null)
 			for (String character : characters) {

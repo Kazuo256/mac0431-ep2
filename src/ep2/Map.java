@@ -28,7 +28,7 @@ public class Map extends MapReduceBase implements
 	// Conjunto de personagens
 	private Set<String> characters = new HashSet<String>();
 	// Analisador léxico dos relatórios gerados
-	private Parser parser = new Parser();
+	private LogParser parser = new LogParser();
 	// Gerador de medidas de dano
 	private DamageMeasurer dps = null;
 
@@ -45,8 +45,10 @@ public class Map extends MapReduceBase implements
 					dps = new DamageMeasurer(dmg.getTime());
 				characters.add(dmg.getSource());
 				dps.addDamage(dmg.getSource(), dmg.getTime(), dmg.getAmount());
-			} /*else if (entry.isResurrectEntry() && dps != null)
-				dps.ressurrectCharacter(entry.getSourceName(), entry.getTime());*/
+			} else if (entry.isResurrectEntry() && dps != null) {
+				System.out.println("RESS");
+				dps.ressurrectCharacter(entry.getSourceName(), entry.getTime());
+			}
 		}
 		if (dps != null)
 			for (String character : characters) {

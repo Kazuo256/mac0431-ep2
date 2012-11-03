@@ -15,8 +15,9 @@ import java.util.StringTokenizer;
  * <url>http://www.wowwiki.com/API_COMBAT_LOG_EVENT</url>
  * </p>
  */
-public class Parser {
+public class LogParser {
 
+	// Índice do parâmetro que indica o tipo da entrada
 	private final static int ENTRYTYPE_INDEX = 0;
 
 	// Ano base usado para as medições de tempo

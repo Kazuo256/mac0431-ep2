@@ -4,6 +4,12 @@ import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
+/**
+ * <p>
+ * Classe que recebe informações de dano dos personagens e gera medidas desses
+ * danos.
+ * </p>
+ */
 public class DamageMeasurer {
 
 	private HashMap<String, SummaryStatistics> damages = new HashMap<String, SummaryStatistics>();
@@ -19,8 +25,7 @@ public class DamageMeasurer {
 		this.getTotalDmg(source).addValue(amount);
 		long timeSinceLast = time - this.getLastDmgTime(source);
 		this.lastDmgTime.put(source, time);
-		this.combatTime.put(source, this.getCombatTime(source)
-				+ timeSinceLast);
+		this.combatTime.put(source, this.getCombatTime(source) + timeSinceLast);
 	}
 
 	public void ressurrectCharacter(String character, long time) {

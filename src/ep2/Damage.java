@@ -1,10 +1,9 @@
-/**
- * 
- */
 package ep2;
 
-/** <p> Represents damage dealt.</p>
- *
+/**
+ * <p>
+ * Classe que representa um dano causado por alguém em um dado momento.
+ * </p>
  */
 public class Damage {
 
@@ -19,24 +18,24 @@ public class Damage {
 	}
 
 	/**
-	 * @return the source of the damage
+	 * @return o nome da origem do dano
 	 */
 	public String getSource() {
 		return source;
 	}
 
 	/**
-	 * @return the time when the damage was dealt
+	 * @return o momento em que o dano foi causado
 	 */
 	public long getTime() {
 		return time;
 	}
 
 	/**
-	 * @return the amount of damage dealt
+	 * @return a quantidade de dano causada
 	 */
 	public long getAmount() {
 		return amount;
 	}
-	
+
 }

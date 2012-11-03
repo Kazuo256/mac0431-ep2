@@ -18,16 +18,21 @@ import ep2.Shuffle;
  */
 public class WoWDPSMeter {
 
-	/**	<p>Função principal do programa.</p>
+	/**
+	 * <p>
+	 * Função principal do programa.
+	 * </p>
 	 * 
-	 * @param args argumentos da linha de comando.
-	 * @throws Exception jogada pelo Hadoop em caso de erro.
+	 * @param args
+	 *            argumentos da linha de comando.
+	 * @throws Exception
+	 *             jogada pelo Hadoop em caso de erro.
 	 */
 	public static void main(String[] args) throws Exception {
 		JobConf conf = new JobConf(WoWDPSMeter.class);
 		String[] otherArgs = new GenericOptionsParser(conf, args)
 				.getRemainingArgs();
-		
+
 		conf.setJobName("dpsmeter");
 
 		conf.setOutputKeyClass(Text.class);

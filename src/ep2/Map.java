@@ -12,10 +12,11 @@ import org.apache.hadoop.mapred.Mapper;
 import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
 
-/** <p>
- * 		Classe que mapeia medidas de dano dos personagens a partir dos
- * 		relatórios de combate gerados pelo jogo.
- * 	</p>
+/**
+ * <p>
+ * Classe que mapeia medidas de dano dos personagens a partir dos relatórios de
+ * combate gerados pelo jogo.
+ * </p>
  */
 public class Map extends MapReduceBase implements
 		Mapper<Object, Text, Text, ObjectWritable> {

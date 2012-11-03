@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ep2;
 
 import java.io.IOException;
@@ -15,21 +12,24 @@ import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
 /**
- * 
- *
+ * <p>
+ * Classe que reduz várias medidas de um mesmo personagem em uma única medida.
+ * </p>
  */
 public class Reduce extends MapReduceBase implements
 		Reducer<Text, ObjectWritable, Text, DoubleWritable> {
 
+	private DoubleWritable dps = new DoubleWritable(0.0);
+
 	@Override
-	public void reduce(Text key, Iterator<ObjectWritable> values,
+	public void reduce(Text name, Iterator<ObjectWritable> measures,
 			OutputCollector<Text, DoubleWritable> output, Reporter reporter)
 			throws IOException {
-		Medida sum = new Medida();
-		while (values.hasNext()) {
-			sum.juntaMedidas((Medida) values.next().get());
-		}
-		output.collect(key, new DoubleWritable(sum.calculaDPS()));
+		Medida measure = new Medida();
+		while (measures.hasNext())
+			measure.juntaMedidas((Medida) measures.next().get());
+		dps.set(measure.calculaDPS());
+		output.collect(name, dps);
 	}
 
 }

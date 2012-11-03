@@ -55,11 +55,21 @@
   
 \section{Detalhes de Implementação}
 
-  Em geral seguimos a ideia apresentada na proposta original no uso das funções
-  Map e Reduce do Hadoop. A única grande diferença é que as estruturas "Medida",
-  ao invés de guardarem o DPS (dano por segundo) de um personagem, guardam a
-  quantidade de dano total que ele causou. Isso simplifica as contas na hora de
-  juntar várias medidas nas funções Reduce e Shuffle.
+  Em geral seguimos a ideia apresentada na nossa proposta original no uso das
+  funções Map e Reduce do Hadoop. As únicas grandes diferenças são:
+  
+  \begin{itemize}
+    \item
+      As estruturas "Medida", ao invés de guardarem o DPS (dano por segundo) de
+      um personagem, guardam a quantidade de dano total que ele causou. Isso
+      simplifica as contas na hora de juntar várias medidas nas funções Reduce e
+      Shuffle.
+    \item
+      Nós descontamos o tempo que personagens passam mortos e inativos durante
+      uma batalha, até que sejam ressucitados. Assim o tempo usado para computar
+      o DPS só considera os períodos que eles realmente estiveram partipando
+      ativamente da batalha.
+  \end{itemize}    
   
   Para maiores detalhes de como era a ideia da proposta original, basta ler o
   arquivo \textbf{proposta.pdf} que entregamos junto com esse relatório.
@@ -73,8 +83,9 @@
         \item[\textit{Devolve:}] \verb$par(nome, medida)$
         \item[\textit{Descrição:}]
           Lê o relatório de combate linha por linha, detectando as entradas de
-          dano. Usa as informações de quem causou o dano e de quando o dano foi
-          causado para gerar as medidas.
+          dano e ressureição dos personagens. Usa as informações de quem causou
+          o dano e de quando o dano foi causado para gerar as medidas, e as de
+          ressureição para descontar o tempo inativo do total nessas medidas.
       \end{itemize}
     \item
       \textbf{Classe Shuffle}:
@@ -102,21 +113,30 @@
   Web}, que apesar de desatualizada, descreve bem a ideia básica.
   
   Com o que aprendemos nesse link e observando os relatórios gerados, fizemos a
-  classe Parser, usada na classe Map, que interpreta as linhas do relatório e
-  detecta as entradas de dano. A classe Map passa essas entradas de dano para
-  a classe DamageMeasurer, que mantém os dados de quanto dano cada personagem
-  causou e quanto tempo cada personagem esteve ativo no combate. Com isso, ela
-  gera objetos do tipo Measure, que são as nossas "medidas". Objetos do tipo
-  Measure podem combinar-se, e isso é usado pelas classes Shuffle e Reduce para
-  juntar as medidas e produzir o resultado final.
+  classe \verb$LogParser$, usada na classe Map, que interpreta as linhas do
+  relatório e gera objetos do tipo \verb$LogEntry$, que abstraem entradas do
+  relatório. Esses objetos sabem se a entrada que representam é de dano, de
+  ressureição ou nenhuma dessas duas.
+  
+  A classe \verb$Map$ extrai das entradas de dano objetos do tipo \verb$Damage$
+  contendo maiores detalhes sobre como o dano ocorreu. Também extrai o momento
+  no tempo em que os personagens são revividos. Ele passa essas informações para
+  a classe \verb$DamageMeasurer$, que mantém os dados de quanto dano cada
+  personagem causou e quanto tempo cada personagem esteve efetivamente ativo no
+  combate. Com isso, ela gera objetos do tipo \verb$Measure$, que são as nossas
+  "medidas".
+  
+  Objetos do tipo \verb$Measure$ podem combinar-se, e isso é usado pelas classes
+  \verb$Shuffle$ e \verb$Reduce$ para juntar as medidas e produzir o resultado
+  final.
   
 \section{Dificuldades e Facilidades}
 
-  As duas maiores dificuldades que tivemos foram depurar classe Parser
+  As duas maiores dificuldades que tivemos foram depurar classe \verb$LogParser$
   (principalmente a parte de ler e manipular unidades de tempo usando a classe
-  Calendar do Java) e perceber que o Hadoop chama o método \verb$map$ de um
-  mesmo objeto Map para cada linha do arquivo, o que exigiu cuidado na hora de
-  escolher usar variáveis locais ou atributos de classe.
+  \verb$Calendar$ do Java) e perceber que o Hadoop chama o método \verb$map$ de
+  um mesmo objeto \verb$Map$ para cada linha do arquivo, o que exigiu cuidado na
+  hora de escolher entre usar variáveis locais ou atributos de classe.
   
   Uma outra dificuldade foi que quando se instala o Hadoop usando um pacote DEB,
   a configuração padrão dele limita a memória usada para 128 MB. Depois de
@@ -126,9 +146,8 @@
   deve ser editado é o segundo...
   
   As principais facilidades foram montar o ambiente de desenvolvimento (usando
-  Eclipse e Git) e a programação em si do projeto.
-  
-  Ou seja, as dificuldades estavam mais nas partes inicial (instalação e
-  configuração do Hadoop) e final (depuração em geral) do desenvolvimento.
+  Eclipse e Git) e a programação em si do projeto. Ou seja, as dificuldades
+  estavam mais nas partes inicial (instalação e configuração do Hadoop) e final
+  (depuração em geral) do desenvolvimento.
 
 \end{document}

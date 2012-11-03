@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ep2;
 
 import java.io.IOException;
@@ -15,17 +12,23 @@ import org.apache.hadoop.mapred.Mapper;
 import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
 
-/**
- * 
- * 
+/** <p>
+ * 		Classe que mapeia medidas de dano dos personagens a partir dos
+ * 		relatórios de combate gerados pelo jogo.
+ * 	</p>
  */
 public class Map extends MapReduceBase implements
 		Mapper<Object, Text, Text, ObjectWritable> {
 
-	private ObjectWritable measure = new ObjectWritable(0.0);
+	// Medida de dano devolvida
+	private ObjectWritable measure = new ObjectWritable();
+	// Nome do personagem associado a uma medida de dano
 	private Text name = new Text();
+	// Conjunto de personagens
 	private Set<String> characters = new HashSet<String>();
+	// Analisador léxico dos relatórios gerados
 	private Parser parser = new Parser();
+	// Gerador de medidas de dano
 	private DamagePerSecond dps = null;
 
 	@Override

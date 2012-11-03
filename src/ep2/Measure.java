@@ -42,7 +42,7 @@ public class Measure implements Writable {
 	public double calculateDPS() {
 		if (this.time == 0)
 			return 0.0;
-		return this.damage / this.time;
+		return 1.0 * this.damage / this.time;
 	}
 
 	@Override

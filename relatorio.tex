@@ -1,0 +1,136 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+
+\title{MAC0431 - Segundo Semestre de 2012 \\
+       EP2 - Fase 2: Relatório}
+\author{Thiago de Gouveia Nunes - Nº USP: 6797289 \\
+        Wilson Kazuo Mizutani - Nº USP: 6797230}
+
+\begin{document}
+
+\maketitle
+
+\section{Organização do Projeto}
+
+  O diretório compactado entregue deve conter os seguintes arquivos:
+  
+  \begin{itemize}
+    \item[\textbf{dpsmeter.jar}]
+      Nosso projeto. É possível rodar ele no Hadoop e também importar como um
+      projeto de Eclipse para ver o código fonte.
+    \item[\textbf{proposta.pdf}]
+      A proposta original do projeto, entregue na primeira fase.
+    \item[\textbf{relatorio.pdf}]
+      Esse relatório.
+    \item[\textbf{slides.pdf}]
+      Os slides da proposta original do projeto, entregues na primeira fase.
+    \item[\textbf{wowlog.txt}]
+      Um relatório pequeno de batalha gerado pelo jogo World of Warcraft para
+      ser usado como entrada para o programa.
+  \end{itemize}
+  
+\section{Modo de Uso}
+
+  Para usar nosso programa, é preciso ter o Hadoop instalado e devidamente
+  configurado, e então usar o comando
+  
+  \begin{verbatim} $ hadoop jar dpsmeter.jar <entrada> <saída> \end{verbatim}
+  
+  Onde:
+  
+  \begin{itemize}
+    \item[<entrada>]
+      Deve ser um arquivo de relatório de combate gerado pelo jogo World of
+      Warcraft (versão atual) como o arquivo \textbf{wowlog.txt}.
+    \item[<saída>]
+      É o nome do diretório onde se deseja que a saída do programa seja escrita.
+      Esse diretório é criado pelo Hadoop, portanto não deve existir quando o
+      programa for executado.
+  \end{itemize}
+  
+  Temos mais três relatórios de combate disponíveis
+  \href{http://www.linux.ime.usp.br/~gorobaum/logs/}{nessa página}. Eles eram
+  grandes demais para mandarmos junto com o projeto.
+  
+\section{Detalhes de Implementação}
+
+  Em geral seguimos a ideia apresentada na proposta original no uso das funções
+  Map e Reduce do Hadoop. A única grande diferença é que as estruturas "Medida",
+  ao invés de guardarem o DPS (dano por segundo) de um personagem, guardam a
+  quantidade de dano total que ele causou. Isso simplifica as contas na hora de
+  juntar várias medidas nas funções Reduce e Shuffle.
+  
+  Para maiores detalhes de como era a ideia da proposta original, basta ler o
+  arquivo \textbf{proposta.pdf} que entregamos junto com esse relatório.
+  Resumidamente, temos que:
+  
+  \begin{enumerate}
+    \item
+      \textbf{Classe Map}:
+      \begin{itemize}
+        \item[\textit{Recebe:}] \verb$par(arquivo, texto)$
+        \item[\textit{Devolve:}] \verb$par(nome, medida)$
+        \item[\textit{Descrição:}]
+          Lê o relatório de combate linha por linha, detectando as entradas de
+          dano. Usa as informações de quem causou o dano e de quando o dano foi
+          causado para gerar as medidas.
+      \end{itemize}
+    \item
+      \textbf{Classe Shuffle}:
+      \begin{itemize}
+        \item[\textit{Recebe:}] \verb$par(nome, lista(medidas))$
+        \item[\textit{Devolve:}] \verb$par(nome, medida)$
+        \item[\textit{Descrição:}]
+          Junta várias medidas de um mesmo personagens numa só. Como agora as
+          medidas guardam o dano total e o tempo total associado ao dano
+          causado, basta somar essas informações respectivamente entre medidas.
+      \end{itemize}
+    \item
+      \textbf{Classe Reduce}:
+      \begin{itemize}
+        \item[\textit{Recebe:}] \verb$par(nome, lista(medidas))$
+        \item[\textit{Devolve:}] \verb$par(nome, DPS)$
+        \item[\textit{Descrição:}]
+          Junta várias medidas como a classe Shuffle, mas no final calcula o
+          DPS de cada personagem e passa para a saída final do programa.
+      \end{itemize}
+  \end{enumerate}
+  
+  Para informações de como os relatórios do World of Warcraft são estruturados,
+  recomendamos \href{http://www.wowwiki.com/API_COMBAT_LOG_EVENT}{essa página da
+  Web}, que apesar de desatualizada, descreve bem a ideia básica.
+  
+  Com o que aprendemos nesse link e observando os relatórios gerados, fizemos a
+  classe Parser, usada na classe Map, que interpreta as linhas do relatório e
+  detecta as entradas de dano. A classe Map passa essas entradas de dano para
+  a classe DamageMeasurer, que mantém os dados de quanto dano cada personagem
+  causou e quanto tempo cada personagem esteve ativo no combate. Com isso, ela
+  gera objetos do tipo Measure, que são as nossas "medidas". Objetos do tipo
+  Measure podem combinar-se, e isso é usado pelas classes Shuffle e Reduce para
+  juntar as medidas e produzir o resultado final.
+  
+\section{Dificuldades e Facilidades}
+
+  As duas maiores dificuldades que tivemos foram depurar classe Parser
+  (principalmente a parte de ler e manipular unidades de tempo usando a classe
+  Calendar do Java) e perceber que o Hadoop chama o método \verb$map$ de um
+  mesmo objeto Map para cada linha do arquivo, o que exigiu cuidado na hora de
+  escolher usar variáveis locais ou atributos de classe.
+  
+  Uma outra dificuldade foi que quando se instala o Hadoop usando um pacote DEB,
+  a configuração padrão dele limita a memória usada para 128 MB. Depois de
+  pesquisar na Internet, descobrimos que essa configuração pode ser editada no
+  arquivo \textbf{hadoop-env.sh}. Mas existem dois arquivos desse: um na pasta
+  onde o Hadoop é instalado, e outro em \verb$/etc/hadoop/$. Aquele que de fato
+  deve ser editado é o segundo...
+  
+  As principais facilidades foram montar o ambiente de desenvolvimento (usando
+  Eclipse e Git) e a programação em si do projeto.
+  
+  Ou seja, as dificuldades estavam mais nas partes inicial (instalação e
+  configuração do Hadoop) e final (depuração em geral) do desenvolvimento.
+
+\end{document}

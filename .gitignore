@@ -14,3 +14,6 @@
 /ep2.jar
 /in
 /out
+*.dvi
+/relatorio.pdf
+

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-jar -cvf ep2.jar classes lib
+jar -cvf dpsmeter.jar classes lib
 rm -rf out/
 

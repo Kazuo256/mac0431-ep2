@@ -18,9 +18,8 @@
   O diretório compactado entregue deve conter os seguintes arquivos:
   
   \begin{itemize}
-    \item[\textbf{dpsmeter.jar}]
-      Nosso projeto. É possível rodar ele no Hadoop e também importar como um
-      projeto de Eclipse para ver o código fonte.
+    \item[\textbf{dpsmeter/}]
+      Nosso projeto. É possível importar ele no Eclipse.
     \item[\textbf{proposta.pdf}]
       A proposta original do projeto, entregue na primeira fase.
     \item[\textbf{relatorio.pdf}]
@@ -32,10 +31,26 @@
   
 \section{Modo de Uso}
 
-  Para usar nosso programa, é preciso ter o Hadoop instalado e devidamente
-  configurado, e então usar o comando
+  Para usar nosso programa, além de ter o Hadoop instalado e devidamente
+  configurado, é preciso gerar o JAR do nosso projeto. Nós teríamos enviado o
+  JAR pronto, mas as dependências não cabiam no limite de espaço do sistema de
+  entrega do PACA.
   
-  \begin{verbatim} $ hadoop jar dpsmeter.jar <entrada> <saída> \end{verbatim}
+  No Linux, se você tiver os programas \verb$wget$ e \verb$tar$ instalados,
+  basta rodar os comandos
+  
+  \begin{verbatim} $ ./download_libs.sh \end{verbatim}
+  \begin{verbatim} $ ./build.sh \end{verbatim}
+  
+  de dentro da pasta \verb$dpsmeter$ para gerar o JAR do nosso projeto.
+  Alternativamente, você pode baixar você mesmo as dependências
+  \href{http://www.linux.ime.usp.br/~wilsonkmizutani/mac0431/ep2/}{aqui},
+  extraí-las na pasta \verb$dpsmeter$ e construir o JAR usando o Eclipse.
+  
+  Uma vez que o JAR esteja pronto, para rodar nosso programa basta usar o
+  comando do Hadoop:
+  
+  \begin{verbatim} $ hadoop jar dpsmeter.jar ep2.WoWDPSMeter <entrada> <saída> \end{verbatim}
   
   Onde:
   
@@ -49,9 +64,20 @@
       programa for executado.
   \end{itemize}
   
-  Temos mais três relatórios de combate disponíveis
-  \href{http://www.linux.ime.usp.br/~gorobaum/logs/}{nessa página}. Eles eram
-  grandes demais para mandarmos junto com o projeto.
+  O argumento \verb$ep2.WoWDPSMeter$ talvez seja desnecessário se o JAR for
+  construído pelo Eclipse, pois dependendo das configurações usadas ele já deixa
+  indicado que ela é a classe principal do programa.
+  
+  \textbf{
+  Se houver algum problema com a montagem do JAR ou a execução do nosso projeto
+  devido ao fato de não havermos podido entregar o JAR pronto (por causa das
+  restrições do PACA), pedimos que entrem em contato conosco para podermos fazer
+  algo a respeito.
+  }
+  
+  Temos mais três relatórios de combate bem grandes disponíveis
+  \href{http://www.linux.ime.usp.br/~gorobaum/logs/}{nessa página}, caso queiram
+  rodar nosso programa com uma entrada mais significativa.
   
 \section{Detalhes de Implementação}
 
@@ -145,9 +171,12 @@
   onde o Hadoop é instalado, e outro em \verb$/etc/hadoop/$. Aquele que de fato
   deve ser editado é o segundo...
   
+  E também tivemos a complicação de arrumar a entrega do projeto pois as
+  dependências não cabiam no sistema de entrega do PACA.
+  
   As principais facilidades foram montar o ambiente de desenvolvimento (usando
   Eclipse e Git) e a programação em si do projeto. Ou seja, as dificuldades
   estavam mais nas partes inicial (instalação e configuração do Hadoop) e final
-  (depuração em geral) do desenvolvimento.
+  (depuração em geral e entrega do projeto) do desenvolvimento.
 
 \end{document}

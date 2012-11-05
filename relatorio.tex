@@ -15,42 +15,29 @@
 
 \section{Organização do Projeto}
 
-  O diretório compactado entregue deve conter os seguintes arquivos:
+  Nosso projeto é composto pelos seguintes arquivos:
   
   \begin{itemize}
-    \item[\textbf{dpsmeter/}]
-      Nosso projeto. É possível importar ele no Eclipse.
+    \item[\textbf{dpsmeter.jar}]
+      O programa. É possível importar ele para o Eclipse.
     \item[\textbf{proposta.pdf}]
       A proposta original do projeto, entregue na primeira fase.
     \item[\textbf{relatorio.pdf}]
       Esse relatório.
     \item[\textbf{wowlog.txt}]
-      Um relatório pequeno de batalha gerado pelo jogo World of Warcraft para
+      Um relatório de batalha pequeno gerado pelo jogo World of Warcraft para
       ser usado como entrada para o programa.
   \end{itemize}
-  
+
+  O arquivo \verb$dpsmeter.jar$ não cabia na entrega do PACA. É possível baixar
+ele \href{http://www.linux.ime.usp.br/~wilsonkmizutani/mac0431/ep2/dpsmeter.jar}
+{\textbf{aqui}}.
+ 
 \section{Modo de Uso}
 
-  Para usar nosso programa, além de ter o Hadoop instalado e devidamente
-  configurado, é preciso gerar o JAR do nosso projeto. Nós teríamos enviado o
-  JAR pronto, mas as dependências não cabiam no limite de espaço do sistema de
-  entrega do PACA.
+  Para usar nosso programa, basta usar o comando do Hadoop:
   
-  No Linux, se você tiver os programas \verb$wget$ e \verb$tar$ instalados,
-  basta rodar os comandos
-  
-  \begin{verbatim} $ ./download_libs.sh \end{verbatim}
-  \begin{verbatim} $ ./build.sh \end{verbatim}
-  
-  de dentro da pasta \verb$dpsmeter$ para gerar o JAR do nosso projeto.
-  Alternativamente, você pode baixar você mesmo as dependências
-  \href{http://www.linux.ime.usp.br/~wilsonkmizutani/mac0431/ep2/}{aqui},
-  extraí-las na pasta \verb$dpsmeter$ e construir o JAR usando o Eclipse.
-  
-  Uma vez que o JAR esteja pronto, para rodar nosso programa basta usar o
-  comando do Hadoop:
-  
-  \begin{verbatim} $ hadoop jar dpsmeter.jar ep2.WoWDPSMeter <entrada> <saída> \end{verbatim}
+  \begin{verbatim} $ hadoop jar dpsmeter.jar <entrada> <saída> \end{verbatim}
   
   Onde:
   
@@ -63,17 +50,6 @@
       Esse diretório é criado pelo Hadoop, portanto não deve existir quando o
       programa for executado.
   \end{itemize}
-  
-  O argumento \verb$ep2.WoWDPSMeter$ talvez seja desnecessário se o JAR for
-  construído pelo Eclipse, pois dependendo das configurações usadas ele já deixa
-  indicado que ela é a classe principal do programa.
-  
-  \textbf{
-  Se houver algum problema com a montagem do JAR ou a execução do nosso projeto
-  devido ao fato de não havermos podido entregar o JAR pronto (por causa das
-  restrições do PACA), pedimos que entrem em contato conosco para podermos fazer
-  algo a respeito.
-  }
   
   Temos mais três relatórios de combate bem grandes disponíveis
   \href{http://www.linux.ime.usp.br/~gorobaum/logs/}{nessa página}, caso queiram
@@ -171,7 +147,7 @@
   onde o Hadoop é instalado, e outro em \verb$/etc/hadoop/$. Aquele que de fato
   deve ser editado é o segundo...
   
-  E também tivemos a complicação de arrumar a entrega do projeto pois as
+  E também tivemos a complicação de não saber como entregar o projeto pois as
   dependências não cabiam no sistema de entrega do PACA.
   
   As principais facilidades foram montar o ambiente de desenvolvimento (usando
